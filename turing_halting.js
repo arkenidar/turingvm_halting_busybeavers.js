@@ -14,30 +14,36 @@ const infinitely_looping_program = [
 ]
 
 function run(states){
-    var tape = [], tape_pos = 0, current_state = 0, snapshots = []
+    var tape = [], tape_pos = 0, current_state = 0, snapshots = [], step = 0
     do {
         var symbol_under_tape = tape[tape_pos]==1?1:0
         var current_tuple = states[current_state][symbol_under_tape]
-        
-        var state_snapshot = JSON.stringify(
-            [current_tuple, tape, tape_pos, current_state]
-        )
-        if(snapshots.indexOf(state_snapshot) != -1)
-            return [count_ones(tape), 'repeating']
-        else snapshots.push(state_snapshot)
-        
+
+        if(false){
+            var state_snapshot = JSON.stringify(
+                [current_tuple, tape, tape_pos, current_state]
+            )
+            if(snapshots.indexOf(state_snapshot) != -1)
+                return [count_ones(tape), 'repeating']
+            else snapshots.push(state_snapshot)
+        }
+
         tape[tape_pos] = current_tuple[0]
         tape_pos += tape_pos_increment[ current_tuple[1] ]
         current_state = current_tuple[2]
-        
+
+        step++
+        if(step == 50) return [count_ones(tape), 'max steps']
+
         //console.log(tape)
+
     } while ( current_tuple[2] != h )
     return [count_ones(tape), 'terminated']
 }
 
 console.log( 'result of running:', run(_3_states_6_ones) )
 console.log( 'result of running:', run(infinitely_looping_program) )
-//console.log( 'busy beavers solution:', busy_beavers_problem(3) )
+console.log( 'busy beavers solution:', busy_beavers_problem(3) )
 
 function ideal_program_count_given_states_count(number_of_states){
     return ((4*( number_of_states +1))**2)** number_of_states
@@ -110,10 +116,15 @@ function tests(){
 }
 
 function busy_beavers_problem(number_of_states){
+    console.log('started busy beaver with number of states:', number_of_states)
     var max = -1
+    var counter = 0
+    var ideal_program_count = ideal_program_count_given_states_count(number_of_states)
     for(var program of generate_programs(number_of_states)){
         var result = run(program)
-        if(result[0] > max) max = result[0]
+        if(result[1] == 'terminated' && result[0] > max) max = result[0]
+        counter++
+        console.log('Programs counter:', counter, '/', ideal_program_count)
     }
     return max
 }
