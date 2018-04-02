@@ -19,7 +19,7 @@ function run(states){
         var symbol_under_tape = tape[tape_pos]==1?1:0
         var current_tuple = states[current_state][symbol_under_tape]
 
-        if(false){
+        if(true){ // you can disable this check, but this check is kind of the most interesting part, combined with using finite tape
             var state_snapshot = JSON.stringify(
                 [current_tuple, tape, tape_pos, current_state]
             )
