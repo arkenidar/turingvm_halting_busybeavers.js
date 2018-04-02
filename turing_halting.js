@@ -41,7 +41,9 @@ function run(states){
     return [count_ones(tape), 'terminated']
 }
 
-console.log( 'busy beavers solution for 2 states:', busy_beavers_problem(2) ) // was 3, but took too much so the demo is now for 2 states
+// was 3, but took too much so the demo is now for 2 states
+console.log( 'busy beavers solution for 2 states:', busy_beavers_problem(2) )
+
 console.log( 'result of running:', run(_3_states_6_ones) )
 console.log( 'result of running:', run(infinitely_looping_program) )
 
